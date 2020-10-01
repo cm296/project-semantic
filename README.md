@@ -1,2 +1,2 @@
 # project-semantic
-backup of semantic repository
+Predicting Semantic Word Embeddings Using DNNs and Neural fMRI responses

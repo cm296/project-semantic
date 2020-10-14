@@ -134,7 +134,7 @@ def correlation(a, b):
     r = (zs(a) * zs(b)).mean()
     return r
 
-def iter_cvregress(X_features,Y,keyword,ilayer,pc = None,iROI = [],k=9,savefolder = None, pretrained = True):
+def iter_cvregress(X_features,Y,keyword,ilayer,pc = None,iROI = [],k=9,savefolder = None, Ypredict = None, pretrained = True):
     #How many fold to compute?
     kf = KFold(n_splits = k)
     l2 = 0.0
@@ -143,10 +143,10 @@ def iter_cvregress(X_features,Y,keyword,ilayer,pc = None,iROI = [],k=9,savefolde
 
     if iROI:
         print('k-fold regression, independet variable: ' + str(pc) + ' PCs retained of ' + keyword + ' from ' + iROI)
-        filename = 'PredictSENSES_' + keyword + '_' +iROI + '_'+ ilayer + '_'+ str(pc) +'PCs'
+        # filename = 'PredictSENSES_' + keyword + '_' +iROI + '_'+ ilayer + '_'+ str(pc) +'PCs'
     else:
         print('k-fold regression, independet variable: ' + str(pc) + ' PCs retained of ' + keyword + ' from ' + ilayer)
-        filename = 'PredictSENSES_' + keyword + '_'+ ilayer + '_'+ str(pc) +'PCs'
+        # filename = 'PredictSENSES_' + keyword + '_'+ ilayer + '_'+ str(pc) +'PCs'
         
     rs = []#[[] for i in (0,(Y.values.shape[1]-1))]
     
@@ -175,9 +175,9 @@ def iter_cvregress(X_features,Y,keyword,ilayer,pc = None,iROI = [],k=9,savefolde
     #Saved information
     if savefolder is not None:
         if iROI:
-            filename = 'PredictSENSES_' + keyword + '_' +iROI + '_'+ ilayer + '_'+ str(pc) +'PCs'
+            filename = 'Predict' + Ypredict + '_' + keyword + '_' +iROI + '_'+ ilayer + '_'+ str(pc) +'PCs'
         else:
-            filename = 'PredictSENSES_' + keyword + '_'+ ilayer + '_'+ str(pc) +'PCs'
+            filename = 'Predict' + Ypredict + '_' + keyword + '_'+ ilayer + '_'+ str(pc) +'PCs'
         if not pretrained:
             np.save(savefolder + filename + '_untrained', mean_r)
         else:
@@ -203,13 +203,13 @@ def regression_iter(x_train, y_train, x_test, y_test, l2=0.0, validate=True):
     else:
         return weights
  
-def make_figure(mean_r,keyword,layer,icomps,iROI = 'Dnn',figure_size=(100,35),figure_path = None, font_size = 100,pretrained = True) :
+def make_figure(mean_r,keyword,layer,icomps,iROI = 'Dnn',figure_size=(100,35),figure_path = None, Ypredict = None, font_size = 100,pretrained = True) :
     if iROI is not 'Dnn':
-        title = 'PredictSENSES ' + keyword + ' ' + iROI + ' ' + layer + ' '+ str(icomps) +'PCs'
-        filename = 'PredictSENSES_' + keyword + '_' +iROI + '_'+ layer + '_'+ str(icomps) +'PCs'
+        title =  'Predict' + Ypredict + '_' + keyword + ' ' + iROI + ' ' + layer + ' '+ str(icomps) +'PCs'
+        filename =  'Predict' + Ypredict + '_' + keyword + '_' +iROI + '_'+ layer + '_'+ str(icomps) +'PCs'
     else:
-        title = 'PredictSENSES ' + keyword + ' ' + layer + ' '+ str(icomps) +'PCs'
-        filename = 'PredictSENSES_' + keyword + '_'+ layer + '_'+ str(icomps) +'PCs'
+        title =  'Predict' + Ypredict + '_' + keyword + ' ' + layer + ' '+ str(icomps) +'PCs'
+        filename =  'Predict' + Ypredict + '_' + keyword + '_'+ layer + '_'+ str(icomps) +'PCs'
         
     plt.figure(figsize = figure_size)
     # Set the font dictionaries (for plot title and axis titles)
